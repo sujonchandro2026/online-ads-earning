@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>online ads earning</title>
+  <title>Ad Reward System</title>
   <style>
     body {
       margin: 0;
@@ -53,8 +53,8 @@ background-color: #4CAF50;
 </head>
 <body>
   <div class="container">
-    <h1>online ads earning </h1>
-    <div class="developer">Developer by online ads</div>
+    <h1>Ad Reward System</h1>
+    <div class="developer">Developer by Sujon</div>
     <div class="stats">
       <p>Watched Ads: <span id="watched-ads">0</span></p>
       <p>Earned Points: <span id="earned-points">0.00</span>৳</p>
@@ -75,14 +75,14 @@ background-color: #4CAF50;
     document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
 
     function watchAd() {
-      if (watchedAds >= 10) {
-        alert("Today’s ad limit reached (10). Try again tomorrow.");
+      if (watchedAds >= 15) {
+        alert("Today’s ad limit reached (15). Try again tomorrow.");
         return;
       }
 
       show_9834394().then(() => {
         watchedAds++;
-        earnedPoints += 5;
+        earnedPoints += 1;
 document.getElementById("watched-ads").textContent = watchedAds;
         document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
         localStorage.setItem("watchedAds", watchedAds);
@@ -109,4 +109,3 @@ document.getElementById("watched-ads").textContent = watchedAds;
   </script>
 </body>
 </html>
-
