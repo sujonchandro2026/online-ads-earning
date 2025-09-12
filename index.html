@@ -3,125 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Ads Earning</title>
+  <title>online ads earning </title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
       background-color: #121212;
       color: #fff;
+      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     .container {
-      background-color: #1f1f1f;
-      padding: 30px;
-      border-radius: 10px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      width: 300px;
     }
     h1 {
-      color: green;
       font-size: 20px;
+      color: green;
+      margin-bottom: 10px;
     }
     .developer {
+      font-size: 12px;
       background-color: green;
-      display: inline-block;
       padding: 5px 10px;
       border-radius: 5px;
-      font-size: 14px;
       margin-bottom: 15px;
-    }
-    .stats {
-margin: 10px 0;
-      font-size: 18px;
+      display: inline-block;
     }
     button {
-      background-color: #4CAF50;
-      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+background-color: #4CAF50;
       color: white;
-      padding: 12px 20px;
-      margin: 10px 0;
-      font-size: 16px;
+      border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-    button:disabled {
-      background-color: #888;
-      cursor: not-allowed;
+    .stats {
+      margin: 15px 0;
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h1>online ads earning </h1>
+    <div class="developer">Developer by online ads earning </div>
+    <div class="stats">
+      <p>Watched Ads: <span id="watched-ads">0</span></p>
+      <p>Earned Points: <span id="earned-points">0.00</span>৳</p>
+    </div>
+    <button onclick="watchAd()">Watch Ad</button>
+    <br><br>
+    <button onclick="withdraw()">Withdraw</button>
+  </div>
 
-<div class="container">
-  <h1>online ads earning</h1>
-  <div class="developer">Developer by online ads earning</div>
-  <div class="stats" id="adsWatched">Watched Ads: 0</div>
-  <div class="stats" id="earnedPoints">Earned Points: 0.00৳</div>
-  <button id="watchAd">Watch Ad</button><br>
-  <button id="withdraw" disabled>Withdraw</button>
-</div>
+  <!-- Monitag Ad SDK -->
+  <script src='//libtl.com/sdk.js' data-zone='9834394' data-sdk='show_9834394'></script>
+  <script> 
 
-<script src='//libtl.com/sdk.js' data-zone='9834394' data-sdk='show_9834394'></script>
+function checkAndResetAdLimit() {
+  const today = new Date().toLocaleDateString();
+  const lastViewDate = localStorage.getItem("lastViewDate");
 
-<script>
-  const watchAdBtn = document.getElementById("watchAd");
-  const withdrawBtn = document.getElementById("withdraw");
-  const adsWatchedText = document.getElementById("adsWatched");
-  const earnedPointsText = document.getElementById("earnedPoints");
-
-  const limit = 15;
-  const pointPerAd = 5;
-  const withdrawLimit = 2000;
-
-  const today = new Date().toISOString().split('T')[0];
-  let storedDate = localStorage.getItem("date") || "";
-let watchedAds = parseInt(localStorage.getItem("watchedAds")) || 0;
-  let earnedPoints = parseFloat(localStorage.getItem("earnedPoints")) || 0;
-
-  if (storedDate !== today) {
-    watchedAds = 0;
-    localStorage.setItem("watchedAds", "0");
-    localStorage.setItem("date", today);
+  if (lastViewDate !== today) {
+    // নতুন দিন, লিমিট রিসেট করো
+    localStorage.setItem("watchedAdsCount", "0");
+    localStorage.setItem("earnedPoints", "0");
+    localStorage.setItem("lastViewDate", today);
   }
+}
 
-  updateUI();
+  let watchedAds = parseInt(localStorage.getItem("watchedAds")) || 0;
+    let earnedPoints = parseFloat(localStorage.getItem("earnedPoints")) || 0;
 
-  watchAdBtn.onclick = function () {
-    if (watchedAds >= limit) {
-      alert("আজকের জন্য আপনি সর্বোচ্চ অ্যাড দেখে ফেলেছেন।");
-      return;
+    document.getElementById("watched-ads").textContent = watchedAds;
+    document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
+
+    function watchAd() {
+      if (watchedAds >= 15) {
+        alert("Today’s ad limit reached (15). Try again tomorrow.");
+        return;
+      }
+
+      show_9834394().then(() => {
+        watchedAds++;
+        earnedPoints += 5;
+document.getElementById("watched-ads").textContent = watchedAds;
+        document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
+        localStorage.setItem("watchedAds", watchedAds);
+        localStorage.setItem("earnedPoints", earnedPoints.toFixed(2));
+      });
     }
 
-    // Simulate ad show delay
-    setTimeout(() => {
-      watchedAds++;
-      earnedPoints += pointPerAd;
-      localStorage.setItem("watchedAds", watchedAds);
-      localStorage.setItem("earnedPoints", earnedPoints.toFixed(2));
-      updateUI();
-    }, 1000);
-  };
-
-  function updateUI() {
-    adsWatchedText.textContent = `Watched Ads: watchedAds`;
-    earnedPointsText.textContent = `Earned Points:{earnedPoints.toFixed(2)}৳`;
-
-    if (earnedPoints >= withdrawLimit) {
-      withdrawBtn.disabled = false;
-    } else {
-      withdrawBtn.disabled = true;
+    function withdraw() {
+      if (earnedPoints < 2000) {
+        alert("Minimum 2000৳ required for withdrawal.");
+        return;
+      }
+      let number = prompt("Enter your bKash number:");
+      if (number) {
+        alert("Withdraw request sent for " + earnedPoints.toFixed(2) + "৳ to " + number);
+        earnedPoints = 0;
+        watchedAds = 0;
+        localStorage.setItem("earnedPoints", "0.00");
+        localStorage.setItem("watchedAds", "0");
+        document.getElementById("watched-ads").textContent = "0";
+        document.getElementById("earned-points").textContent = "0.00";
+      }
     }
-  }
-
-  withdrawBtn.onclick = function () {
-    alert("Withdraw ডেমো: আপনার রিকোয়েস্ট গ্রহণ করা হয়েছে!");
-  };
-</script>
-
+  </script>
 </body>
-</html>
+</html>  
+
+
