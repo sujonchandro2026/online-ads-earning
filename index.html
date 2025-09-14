@@ -4,96 +4,123 @@
   <meta charset="UTF-8">
   <title>Online Ads Earning</title>
   <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      background-color: #111;
-      color: white;
+      background: #111;
+      color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
-    .card {
-      background-color: #1c1c1c;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #000;
+
+    .container {
+      background: #222;
+      padding: 30px 40px;
+      border-radius: 15px;
       text-align: center;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
     }
+
     h2 {
-      color: #00cc00;
+      color: #00c800;
       margin-bottom: 10px;
+      text-transform: capitalize;
     }
-    .badge {
-      background-color: #00cc00;
+
+    .developer {
+      background: #00c800;
+      color: white;
       padding: 5px 15px;
       border-radius: 5px;
-      display: inline-block;
+      font-size: 14px;
       margin-bottom: 20px;
+      display: inline-block;
     }
-    button {
-      background-color: #4CAF50;
-      border: none;
-      padding: 12px 24px;
+
+    p {
       margin: 10px 0;
-      border-radius: 6px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      width: 150px;
+      font-size: 18px;
     }
-button:hover {
-      background-color: #45a049;
+
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      margin: 10px;
+      font-size: 16px;
+border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #45a049;
     }
   </style>
 </head>
 <body>
-  <div class="card">
+
+  <div class="container">
     <h2>online ads earning</h2>
-    <div class="badge">Developer by online ads earning</div>
+    <div class="developer">Developer by online ads earning</div>
+
     <p>Watched Ads: <span id="watched-ads">0</span></p>
-    <p>Earned Points: <span id="earned-points">0.00</span>৳</p>
-    <button onclick="watchAd()">Watch Ad</button><br>
+    <p>Earned Points: <span id="earned-points">0.00৳</span></p>
+
+    <button onclick="watchAd()">Watch Ad</button>
     <button onclick="withdraw()">Withdraw</button>
   </div>
 
-  <!-- Ad SDK -->
-<script src='//libtl.com/sdk.js' data-zone='9834394' data-sdk='show_9834394'></script>
+  <!-- Monitag Ad SDK -->
+  <script src="//libtl.com/sdk.js" data-zone="9834394" data-sdk="show_9834394"></script>
+
   <script>
-    let today = new Date().toISOString().split("T")[0];
-    let storedDate = localStorage.getItem("watchDate");
-
-    if (storedDate !== today) {
-      localStorage.setItem("watchedAds", "0");
-      localStorage.setItem("watchDate", today);
-    }
-
+    // Load from localStorage or set default values
     let watchedAds = parseInt(localStorage.getItem("watchedAds")) || 0;
     let earnedPoints = parseFloat(localStorage.getItem("earnedPoints")) || 0;
 
+    // Show initial values
     document.getElementById("watched-ads").textContent = watchedAds;
-    document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
+    document.getElementById("earned-points").textContent = earnedPoints.toFixed(2) + "৳";
 
+    // Watch Ad function (No limit)
     function watchAd() {
-      if (watchedAds >= 15) {
-        alert("Today’s ad limit (15) reached. Try again tomorrow.");
-        return;
+      if (typeof show_9834394 === "function") {
+        show_9834394().then(() => {
+          addPoints();
+        }).catch(() => {
+          alert("Ad loading failed.");
+        });
+} else {
+        // fallback delay if ad SDK not loaded
+        setTimeout(addPoints, 10000);
       }
-
-      // Show the ad (use your SDK)
-show_9834394().then(() => {
-        watchedAds++;
-        earnedPoints += 5;
-
-        localStorage.setItem("watchedAds", watchedAds);
-        localStorage.setItem("earnedPoints", earnedPoints.toFixed(2));
-
-        document.getElementById("watched-ads").textContent = watchedAds;
-        document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
-      });
     }
 
+    // Add points & update UI/storage
+    function addPoints() {
+      watchedAds++;
+      earnedPoints += 5;
+
+      localStorage.setItem("watchedAds", watchedAds);
+      localStorage.setItem("earnedPoints", earnedPoints.toFixed(2));
+
+      document.getElementById("watched-ads").textContent = watchedAds;
+      document.getElementById("earned-points").textContent = earnedPoints.toFixed(2) + "৳";
+
+      alert("Ad watched! 5৳ added.");
+    }
+
+    // Withdraw function
     function withdraw() {
       if (earnedPoints < 2000) {
         alert("Minimum 2000৳ required for withdrawal.");
@@ -103,12 +130,17 @@ show_9834394().then(() => {
       let number = prompt("Enter your bKash number:");
       if (number) {
         alert("Withdraw request sent for " + earnedPoints.toFixed(2) + "৳ to " + number);
+
+        // Reset after withdrawal
+        watchedAds = 0;
         earnedPoints = 0;
+        localStorage.setItem("watchedAds", "0");
         localStorage.setItem("earnedPoints", "0.00");
-        document.getElementById("earned-points").textContent = "0.00";
+
+        document.getElementById("watched-ads").textContent = "0";
+        document.getElementById("earned-points").textContent = "0.00৳";
       }
     }
   </script>
 </body>
 </html>
-
