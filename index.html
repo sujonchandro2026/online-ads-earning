@@ -74,6 +74,12 @@ background-color: #4CAF50;
     document.getElementById("watched-ads").textContent = watchedAds;
     document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
 
+function watchAd() {
+      if (watchedAds >= 15) {
+        alert("Today’s ad limit reached (15). Try again tomorrow.");
+        return;
+      }
+
       show_9834394().then(() => {
         watchedAds++;
         earnedPoints += 5;
