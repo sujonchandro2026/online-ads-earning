@@ -2,17 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Online Ads Earning</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>online ads earning </title>
   <style>
-    /* Basic Reset */
-    * {
+    body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #111;
+      background-color: #121212;
       color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
@@ -20,125 +16,88 @@
       align-items: center;
       height: 100vh;
     }
-
     .container {
-      background: #222;
-      padding: 30px 40px;
-      border-radius: 15px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      width: 300px;
     }
-
-    h2 {
-      color: #00c800;
+    h1 {
+      font-size: 20px;
+      color: green;
       margin-bottom: 10px;
-      text-transform: capitalize;
     }
-
     .developer {
-      background: #00c800;
-      color: white;
-      padding: 5px 15px;
+      font-size: 12px;
+      background-color: green;
+      padding: 5px 10px;
       border-radius: 5px;
-      font-size: 14px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       display: inline-block;
     }
-
-    p {
-      margin: 10px 0;
-      font-size: 18px;
-    }
-
     button {
-      background: #4CAF50;
+      padding: 10px 15px;
+      font-size: 14px;
+background-color: #4CAF50;
       color: white;
       border: none;
-      padding: 12px 25px;
-      margin: 10px;
-      font-size: 16px;
-border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
-      transition: background 0.3s;
     }
-
-    button:hover {
-      background: #45a049;
+    .stats {
+      margin: 15px 0;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h2>online ads earning</h2>
-    <div class="developer">Developer by online ads earning</div>
-
-    <p>Watched Ads: <span id="watched-ads">0</span></p>
-    <p>Earned Points: <span id="earned-points">0.00৳</span></p>
-
+    <h1>online ads earning </h1>
+    <div class="developer">Developer by online ads earning </div>
+    <div class="stats">
+      <p>Watched Ads: <span id="watched-ads">0</span></p>
+      <p>Earned Points: <span id="earned-points">0.00</span>৳</p>
+    </div>
     <button onclick="watchAd()">Watch Ad</button>
+    <br><br>
     <button onclick="withdraw()">Withdraw</button>
   </div>
 
   <!-- Monitag Ad SDK -->
-  <script src="//libtl.com/sdk.js" data-zone="9834394" data-sdk="show_9834394"></script>
+  <script src='//libtl.com/sdk.js' data-zone='9834394' data-sdk='show_9834394'></script>
 
   <script>
-    // Load from localStorage or set default values
     let watchedAds = parseInt(localStorage.getItem("watchedAds")) || 0;
     let earnedPoints = parseFloat(localStorage.getItem("earnedPoints")) || 0;
 
-    // Show initial values
     document.getElementById("watched-ads").textContent = watchedAds;
-    document.getElementById("earned-points").textContent = earnedPoints.toFixed(2) + "৳";
+    document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
 
-    // Watch Ad function (No limit)
-    function watchAd() {
-      if (typeof show_9834394 === "function") {
-        show_9834394().then(() => {
-          addPoints();
-        }).catch(() => {
-          alert("Ad loading failed.");
-        });
-} else {
-        // fallback delay if ad SDK not loaded
-        setTimeout(addPoints, 10000);
-      }
+      show_9834394().then(() => {
+        watchedAds++;
+        earnedPoints += 5;
+document.getElementById("watched-ads").textContent = watchedAds;
+        document.getElementById("earned-points").textContent = earnedPoints.toFixed(2);
+        localStorage.setItem("watchedAds", watchedAds);
+        localStorage.setItem("earnedPoints", earnedPoints.toFixed(2));
+      });
     }
 
-    // Add points & update UI/storage
-    function addPoints() {
-      watchedAds++;
-      earnedPoints += 5;
-
-      localStorage.setItem("watchedAds", watchedAds);
-      localStorage.setItem("earnedPoints", earnedPoints.toFixed(2));
-
-      document.getElementById("watched-ads").textContent = watchedAds;
-      document.getElementById("earned-points").textContent = earnedPoints.toFixed(2) + "৳";
-
-      alert("Ad watched! 5৳ added.");
-    }
-
-    // Withdraw function
     function withdraw() {
       if (earnedPoints < 2000) {
         alert("Minimum 2000৳ required for withdrawal.");
         return;
       }
-
       let number = prompt("Enter your bKash number:");
       if (number) {
         alert("Withdraw request sent for " + earnedPoints.toFixed(2) + "৳ to " + number);
-
-        // Reset after withdrawal
-        watchedAds = 0;
         earnedPoints = 0;
-        localStorage.setItem("watchedAds", "0");
+        watchedAds = 0;
         localStorage.setItem("earnedPoints", "0.00");
-
+        localStorage.setItem("watchedAds", "0");
         document.getElementById("watched-ads").textContent = "0";
-        document.getElementById("earned-points").textContent = "0.00৳";
+        document.getElementById("earned-points").textContent = "0.00";
       }
     }
   </script>
